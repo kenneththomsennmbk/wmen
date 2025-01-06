@@ -1,0 +1,16 @@
+* {
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+#heading {
+	color: blue;
+	border: 1px solid gold;
+	background-color: pink;
+}
+
+#keep-in-touch {
+	color: pink;
+	border: 1px solid blue;
+}
