@@ -4,6 +4,9 @@ const path = require('path');
 const url = require('url');
 const net = require('net');
 const os = require('os');
+var {WASI} = require('node:wasi');
+const {argv, env} = require('node:process');
+const {readFile} = require('node:fs/promises');
 var express = require('express');
 var app = express();
 var morgan = require('morgan');
@@ -11,7 +14,9 @@ var bodyparser = require('body-parser');
 var jsonparser = bodyparser.json();
 var hparser = bodyparser.text({type: 'text/plain'});
 var urlencode = bodyparser.urlencoded({extended: true});
-
+const bytes = fs.readFileSync(__dirname + '/scripts/addint.wasm');
+const value1 = parseInt(process.argv[2]);
+const value2 = parseInt(process.argv[3]);
 app.use(morgan('dev'));
 app.use(jsonparser);
 app.use(hparser);
@@ -37,7 +42,9 @@ app.post('/thank-you.html', jsonparser, function (req, res) {
 }});
 app.listen(3000);
 console.log('Express started on port 3000');
-
+WebAssembly.instantiate(new Uint8Array (bytes)).then((obj) => {
+        let add_value = obj.instance.exports.addInt(value1, value2);
+        console.log(`${value1} + ${value2} = ${add_value}`);});
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+connectionType:connectionString...";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
