@@ -32,8 +32,8 @@ app.post('/thank-you.html', jsonparser, function (req, res) {
 		client.db("dbName").collection("collectionName").insertOne({_id: email.toString()});}
 	finally {
 	console.log('received: ', name, surname, email);
-	nextCommand();
 	res.status(303).location('/thank-you.html').send({'Content-Type': 'text/html', message: 'Thank you'});
+		nextCommand();
 }});
 app.listen(3000);
 console.log('Express started on port 3000');
